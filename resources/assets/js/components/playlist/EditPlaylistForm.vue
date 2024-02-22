@@ -25,6 +25,11 @@
             <option v-for="folder in folders" :key="folder.id" :value="folder.id">{{ folder.name }}</option>
           </select>
         </label>
+        <label class="folder">
+        Public
+        <input type="checkbox" v-bind:true-value="1" v-bind:false-value="0" v-model="is_public" name="is_public">
+        <input type="text" v-model="is_public">
+        </label>
       </div>
     </main>
 
@@ -42,13 +47,17 @@ import { playlistFolderStore, playlistStore } from '@/stores'
 import { useDialogBox, useMessageToaster, useModal, useOverlay } from '@/composables'
 
 import Btn from '@/components/ui/Btn.vue'
+import CheckBox from '../ui/CheckBox.vue'
 
 const { showOverlay, hideOverlay } = useOverlay()
 const { toastSuccess } = useMessageToaster()
 const { showConfirmDialog, showErrorDialog } = useDialogBox()
 const playlist = useModal().getFromContext<Playlist>('playlist')
+console.log(playlist.name)
+console.log(playlist.is_public)
 
 const name = ref(playlist.name)
+const is_public = ref(playlist.is_public)
 const folderId = ref(playlist.folder_id)
 const folders = toRef(playlistFolderStore.state, 'folders')
 
@@ -57,11 +66,12 @@ const close = () => emit('close')
 
 const submit = async () => {
   showOverlay()
-
+  console.log(is_public.value)
   try {
     await playlistStore.update(playlist, {
       name: name.value,
-      folder_id: folderId.value
+      folder_id: folderId.value,
+      is_public: is_public.value
     })
 
     toastSuccess('Playlist updated.')

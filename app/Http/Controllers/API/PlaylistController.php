@@ -74,7 +74,8 @@ class PlaylistController extends Controller
                 $playlist,
                 $request->name,
                 $folder,
-                $request->rules ? SmartPlaylistRuleGroupCollection::create(Arr::wrap($request->rules)) : null
+                $request->rules ? SmartPlaylistRuleGroupCollection::create(Arr::wrap($request->rules)) : null,
+                $request->is_public
             )
         );
     }

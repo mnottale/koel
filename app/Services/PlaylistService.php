@@ -49,6 +49,7 @@ class PlaylistService
         string $name,
         ?Folder $folder = null,
         ?SmartPlaylistRuleGroupCollection $ruleGroups = null,
+        int $is_public = 0
     ): Playlist {
         if ($folder) {
             Assert::true($playlist->user->is($folder->user), 'The playlist folder does not belong to the user');
@@ -58,6 +59,7 @@ class PlaylistService
             'name' => $name,
             'rules' => $ruleGroups,
             'folder_id' => $folder?->id,
+            'is_public' => $is_public,
         ]);
 
         return $playlist;

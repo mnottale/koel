@@ -109,11 +109,12 @@ export const playlistStore = {
     return playlist
   },
 
-  async update (playlist: Playlist, data: Partial<Pick<Playlist, 'name' | 'rules' | 'folder_id'>>) {
+  async update (playlist: Playlist, data: Partial<Pick<Playlist, 'name' | 'rules' | 'folder_id' | 'is_public' >>) {
     await http.put(`playlists/${playlist.id}`, {
       name: data.name,
       rules: data.rules ? this.serializeSmartPlaylistRulesForStorage(data.rules) : null,
-      folder_id: data.folder_id
+      folder_id: data.folder_id,
+      is_public: data.is_public
     })
 
     playlist.is_smart && cache.remove(['playlist.songs', playlist.id])

@@ -24,6 +24,7 @@ class PlaylistResource extends JsonResource
             'is_smart' => $this->playlist->is_smart,
             'rules' => $this->playlist->rules,
             'created_at' => $this->playlist->created_at,
+            'is_public' => $this->playlist->is_public,
         ];
     }
 }

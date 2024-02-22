@@ -25,6 +25,7 @@ use Laravel\Scout\Searchable;
  * @property ?SmartPlaylistRuleGroupCollection $rule_groups
  * @property ?SmartPlaylistRuleGroupCollection $rules
  * @property Carbon $created_at
+ * @property int $is_public
  */
 class Playlist extends Model
 {

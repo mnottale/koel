@@ -20,6 +20,7 @@ class PlaylistUpdateRequest extends Request
             'name' => 'required',
             'rules' => ['array', 'nullable', new ValidSmartPlaylistRulePayload()],
             'folder_id' => ['nullable', 'sometimes', Rule::exists(PlaylistFolder::class, 'id')],
+            'is_public' => 'required',
         ];
     }
 }
