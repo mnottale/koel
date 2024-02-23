@@ -44,6 +44,12 @@ class PlaylistService
         });
     }
 
+    // @return PlayList[]
+    public function peerPlaylists(User $user)
+    {
+        return Playlist::where('is_public', true)->where('user_id', '!=', $user->id)->get();
+    }
+
     public function updatePlaylist(
         Playlist $playlist,
         string $name,

@@ -10,6 +10,7 @@ interface CommonStoreState {
   current_version: string
   latest_version: string
   playlists: Playlist[]
+  peer_playlists: Playlist[]
   playlist_folders: PlaylistFolder[]
   settings: Settings
   use_i_tunes: boolean
@@ -30,6 +31,7 @@ export const commonStore = {
     current_version: '',
     latest_version: '',
     playlists: [],
+    peer_playlists: [],
     playlist_folders: [],
     settings: {} as Settings,
     use_i_tunes: false,
@@ -56,6 +58,23 @@ export const commonStore = {
     // If this is a new user, initialize his preferences to be an empty object.
     this.state.current_user.preferences = this.state.current_user.preferences || {}
 
+    // Hack in peer data
+    var seen = Object()
+    this.state.peer_playlists.forEach(ppl => {
+      var un = ppl.user_name
+      if (!(un in seen))
+      {
+        seen[un] = 1
+        var fake: PlaylistFolder = {
+          type: 'playlist-folders',
+          id: un,
+          name: un
+        }
+        this.state.playlist_folders.push(fake)
+      }
+      ppl.folder_id = un
+      this.state.playlists.push(ppl)
+    })
     userStore.init(this.state.current_user)
     preferenceStore.init(this.state.current_user)
     playlistStore.init(this.state.playlists)

@@ -220,6 +220,7 @@ interface Playlist {
   is_smart: boolean
   rules: SmartPlaylistRuleGroup[]
   is_public: number
+  user_name: string
 }
 
 type PlaylistLike = Playlist | FavoriteList | RecentlyPlayedList

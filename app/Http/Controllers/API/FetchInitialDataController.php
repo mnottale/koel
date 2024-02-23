@@ -13,6 +13,7 @@ use App\Repositories\SongRepository;
 use App\Services\ApplicationInformationService;
 use App\Services\ITunesService;
 use App\Services\LastfmService;
+use App\Services\PlaylistService;
 use App\Services\QueueService;
 use App\Services\SpotifyService;
 use App\Services\YouTubeService;
@@ -27,11 +28,13 @@ class FetchInitialDataController extends Controller
         SongRepository $songRepository,
         ApplicationInformationService $applicationInformationService,
         QueueService $queueService,
+        PlaylistService $playlistService,
         ?Authenticatable $user
     ) {
         return response()->json([
             'settings' => $user->is_admin ? $settingRepository->getAllAsKeyValueArray() : [],
             'playlists' => PlaylistResource::collection($user->playlists),
+            'peer_playlists' => PlaylistResource::collection($playlistService->peerPlaylists($user)),
             'playlist_folders' => PlaylistFolderResource::collection($user->playlist_folders),
             'current_user' => UserResource::make($user, true),
             'use_last_fm' => LastfmService::used(),

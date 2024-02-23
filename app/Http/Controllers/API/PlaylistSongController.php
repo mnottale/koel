@@ -27,7 +27,9 @@ class PlaylistSongController extends Controller
 
     public function index(Playlist $playlist)
     {
-        $this->authorize('own', $playlist);
+        if (!$playlist->is_public) {
+            $this->authorize('own', $playlist);
+        }
 
         return SongResource::collection(
             $playlist->is_smart
