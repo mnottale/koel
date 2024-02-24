@@ -157,6 +157,7 @@ interface QueueState {
   songs: Song[]
   current_song: Song | null
   playback_position: number
+  user_name: string
 }
 
 interface SmartPlaylistRuleGroup {

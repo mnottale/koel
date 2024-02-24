@@ -5,7 +5,9 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\UpdateQueueStateRequest;
 use App\Http\Resources\QueueStateResource;
+use App\Http\Resources\NowPlayingResource;
 use App\Models\User;
+use App\Models\QueueState;
 use App\Services\QueueService;
 use Illuminate\Contracts\Auth\Authenticatable;
 
@@ -25,6 +27,6 @@ class QueueStateController extends Controller
     {
         $this->queueService->updateQueueState($this->user, $request->songs);
 
-        return response()->noContent();
+        return NowPlayingResource::collection(QueueState::where('user_id', '!=', $this->user->id));
     }
 }

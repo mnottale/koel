@@ -5,6 +5,7 @@ import { shuffle, throttle } from 'lodash'
 
 import {
   commonStore,
+  nowPlayingStore,
   preferenceStore as preferences,
   queueStore,
   recentlyPlayedStore,
@@ -392,9 +393,11 @@ class PlaybackService {
       // every 5 seconds, we save the current playback position to the server
       if (Math.ceil(media.currentTime) % 5 === 0) {
         try {
-          http.silently.put('queue/playback-status', {
+          http.silently.put<QueueState[]>('queue/playback-status', {
             song: currentSong.id,
             position: Math.ceil(media.currentTime)
+          }).then( np => {
+            nowPlayingStore.update(np)
           })
         } catch (error) {
           console.log(error)

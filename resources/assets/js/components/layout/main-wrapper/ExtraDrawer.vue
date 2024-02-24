@@ -68,6 +68,9 @@
       >
         <YouTubeVideoList v-if="useYouTube && song" :song="song" />
       </div>
+      <div class="nowPlaying">
+        <NowPlaying />
+      </div>
     </div>
   </aside>
 </template>
@@ -89,6 +92,7 @@ const ArtistInfo = defineAsyncComponent(() => import('@/components/artist/Artist
 const AlbumInfo = defineAsyncComponent(() => import('@/components/album/AlbumInfo.vue'))
 const YouTubeVideoList = defineAsyncComponent(() => import('@/components/ui/YouTubeVideoList.vue'))
 const ExtraDrawerTabHeader = defineAsyncComponent(() => import('@/components/ui/ExtraDrawerTabHeader.vue'))
+const NowPlaying = defineAsyncComponent(() => import('@/components/layout/main-wrapper/NowPlaying.vue'))
 
 const { currentUser } = useAuthorization()
 const { useYouTube } = useThirdPartyServices()
