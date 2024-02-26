@@ -35,7 +35,7 @@ class MediaSyncService
      * New records will have all tags synced in regardless.
      * @param bool $force Whether to force syncing even unchanged files
      */
-    public function sync(array $ignores = [], bool $force = false): SyncResultCollection
+    public function sync(array $ignores = [], bool $force = false, ?string $modifiedSince = null): SyncResultCollection
     {
         /** @var string $mediaPath */
         $mediaPath = $this->settingRepository->getByKey('media_path');
@@ -43,7 +43,7 @@ class MediaSyncService
         $this->setSystemRequirements();
 
         $results = SyncResultCollection::create();
-        $songPaths = $this->gatherFiles($mediaPath);
+        $songPaths = $this->gatherFiles($mediaPath, $modifiedSince);
 
         if (isset($this->events['paths-gathered'])) {
             $this->events['paths-gathered']($songPaths);
@@ -78,14 +78,19 @@ class MediaSyncService
      *
      * @return array<SplFileInfo>
      */
-    private function gatherFiles(string $path): array
+    private function gatherFiles(string $path, ?string $modifiedSince): array
     {
+        if ($modifiedSince === null) {
+            $modifiedSince = '1970-01-01';
+        }
+
         return iterator_to_array(
             $this->finder->create()
                 ->ignoreUnreadableDirs()
                 ->ignoreDotFiles((bool) config('koel.ignore_dot_files')) // https://github.com/koel/koel/issues/450
                 ->files()
                 ->followLinks()
+                ->date('> ' . $modifiedSince)
                 ->name('/\.(mp3|wav|ogg|m4a|flac|opus)$/i')
                 ->in($path)
         );
