@@ -63,7 +63,9 @@ class MediaSyncService
             }
         }
 
-        event(new MediaSyncCompleted($results));
+        if (is_null($modifiedSince)) {
+            event(new MediaSyncCompleted($results));
+        }
 
         // Trigger LibraryChanged, so that PruneLibrary handler is fired to prune the lib.
         event(new LibraryChanged());
